@@ -1,8 +1,8 @@
 {
   "notice": {
-    "id": 520203,
-    "title": "测试",
-    "body": "测试",
+    "id": 315406,
+    "title": "注意",
+    "body": "未使用稳定资源站，如出现问题，将会尽快至切换自建视频站",
     "enabled": 1
   },
   "versions": {
@@ -15,12 +15,12 @@
       "notes": ""
     },
     "anime": {
-      "ver_code": 111,
-      "ver_name": "111",
+      "ver_code": 0,
+      "ver_name": "",
       "force": 0,
       "enabled": 1,
-      "url": "111",
-      "notes": "111"
+      "url": "",
+      "notes": ""
     }
   }
 }
