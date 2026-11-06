@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>老八 · 公告与版本 · 编辑台</title>
+<style>
+:root{--bg:#0b0e13;--card:#131821;--card2:#1a202b;--line:rgba(255,255,255,.08);--tx:#eef2f8;--tx2:#8d97a6;--ac:#ff5c33}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(120% 60% at 15% 0%,#161c27 0%,#0b0e13 55%);color:var(--tx);min-height:100vh;
+font:14px/1.65 -apple-system,"PingFang SC","Noto Sans CJK SC",sans-serif;padding:26px 16px 70px}
+.wrap{max-width:880px;margin:0 auto}
+h1{font-size:20px;font-weight:750;letter-spacing:.3px}
+.sub{color:var(--tx2);font-size:12.5px;margin-top:5px}
+.bar{position:sticky;top:0;z-index:5;background:rgba(11,14,19,.86);backdrop-filter:blur(10px);
+border-bottom:1px solid var(--line);margin:0 -16px 18px;padding:12px 16px}
+.bar-in{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bar .sp{flex:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.card h2{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card h2 span{font-size:11px;font-weight:400;color:var(--tx2)}
+label{display:block;font-size:12px;color:var(--tx2);margin:14px 0 5px}
+input,textarea,select{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:9px;color:var(--tx);
+padding:10px 12px;font:inherit;outline:none;transition:border-color .15s}
+input:focus,textarea:focus{border-color:rgba(255,92,51,.55)}
+textarea{min-height:88px;resize:vertical}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row>div{flex:1;min-width:150px}
+.chk{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12.5px;color:var(--tx2);cursor:pointer}
+.chk input{width:16px;height:16px;flex:none}
+.btn{background:var(--ac);border:0;color:#fff;border-radius:9px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13px}
+.btn.ghost{background:var(--card2);color:var(--tx);border:1px solid var(--line);font-weight:400}
+.btn.sm{padding:5px 11px;font-size:12px}
+.tip{color:var(--tx2);font-size:12px;line-height:1.8;margin-top:10px}
+.code{margin-top:10px;width:100%;min-height:150px;background:#0d1118;border:1px solid var(--line);border-radius:10px;
+color:#a9d7b4;font:12.5px/1.6 ui-monospace,Menlo,Consolas,monospace;padding:12px;white-space:pre;overflow:auto}
+.msg{font-size:12px;min-height:16px;margin-top:8px}
+.msg.ok{color:#57d99a}.msg.bad{color:#ff8a6b}
+.modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.66);padding:24px}
+.modal.show{display:flex}
+.mcard{width:100%;max-width:330px;background:#12161d;border:1px solid var(--line);border-radius:18px;padding:20px}
+.mt{font-size:16.5px;font-weight:700}
+.mtag{font-size:10.5px;padding:2px 8px;border-radius:20px;background:rgba(255,92,51,.18);color:#ff8a6b;margin-left:8px}
+.mb{font-size:13px;color:var(--tx2);white-space:pre-wrap;margin-top:10px;max-height:40vh;overflow:auto}
+.macts{display:flex;gap:10px;margin-top:18px}
+.mbtn{flex:1;height:40px;border-radius:11px;border:1px solid var(--line);background:#191e27;color:var(--tx);font-size:13.5px}
+.mbtn.pri{background:linear-gradient(135deg,#ff7a3d,#ff3d2e);border:0;color:#fff;font-weight:600}
+</style>
+</head>
+<body>
+<div class="bar"><div class="bar-in">
+  <div style="font-weight:700">老八 · 编辑台</div>
+  <div class="sp"></div>
+  <button class="btn ghost sm" onclick="preview()">预览弹窗</button>
+  <button class="btn ghost sm" onclick="copyJson()">复制 JSON</button>
+  <button class="btn sm" onclick="download()">下载 config.json</button>
+</div></div>
+
+<div class="wrap">
+  <h1>公告栏与版本更新</h1>
+  <p class="sub">改完点「下载 config.json」，覆盖到 <b>dmadmin.5204219.xyz/config.json</b>，App 下次启动就会读到（草稿自动存在本机）</p>
+
+  <div class="card">
+    <h2>公告栏 <span>用户点「我知道了」后同一条不再重复弹</span></h2>
+    <div class="row">
+      <div><label>标题</label><input id="nTitle" placeholder="例如：线路维护通知"></div>
+      <div style="max-width:180px"><label>公告编号</label><input id="nId" readonly></div>
+    </div>
+    <label>内容</label><textarea id="nBody" placeholder="支持换行，建议 30–200 字"></textarea>
+    <div class="chk"><input type="checkbox" id="nOn" checked><span>启用这条公告</span></div>
+    <div class="tip">改了内容但编号没变时，老用户不会再看到弹窗 —— 点右边按钮换个编号即可让所有人重新看到。</div>
+    <button class="btn ghost sm" style="margin-top:8px" onclick="renewId()">更换公告编号（让所有人重新看到）</button>
+  </div>
+
+  <div class="card">
+    <h2>老八影视 · 版本</h2>
+    <div class="row">
+      <div><label>版本号（整数，大于 App 内置值才提示）</label><input id="tvCode" type="number" placeholder="11"></div>
+      <div><label>版本名</label><input id="tvName" placeholder="v1.10"></div>
+    </div>
+    <label>安装包地址</label><input id="tvUrl" placeholder="https://aka.doubaocdn.com/s/xxxx">
+    <label>更新说明</label><textarea id="tvNotes" placeholder="这次改了什么，支持换行"></textarea>
+    <label class="chk"><input type="checkbox" id="tvForce"><span>强制更新（不更新不能继续用）</span></label>
+    <label class="chk"><input type="checkbox" id="tvOn" checked><span>启用这个版本</span></label>
+  </div>
+
+  <div class="card">
+    <h2>老八动漫 · 版本</h2>
+    <div class="row">
+      <div><label>版本号（整数）</label><input id="anCode" type="number" placeholder="11"></div>
+      <div><label>版本名</label><input id="anName" placeholder="v1.10"></div>
+    </div>
+    <label>安装包地址</label><input id="anUrl" placeholder="https://aka.doubaocdn.com/s/xxxx">
+    <label>更新说明</label><textarea id="anNotes"></textarea>
+    <label class="chk"><input type="checkbox" id="anForce"><span>强制更新</span></label>
+    <label class="chk"><input type="checkbox" id="anOn" checked><span>启用这个版本</span></label>
+  </div>
+
+  <div class="card">
+    <h2>生成的 config.json <span>点「下载」后直接覆盖上传</span></h2>
+    <textarea class="code" id="out" readonly></textarea>
+    <p class="msg" id="msg"></p>
+    <div class="tip">发布步骤：① 点右上「下载 config.json」 ② 打开 dmadmin.5204219.xyz 的文件管理，把同名文件覆盖上传 ③ 手机端刷新一次即可看到新公告。若站点挂了 CDN，记得刷新缓存或用带时间戳的访问验证。</div>
+  </div>
+</div>
+
+<div class="modal" id="pv"><div class="mcard" id="pvCard"></div></div>
+
+<script>
+var KEY_STORE = 'lb_cfg_v1';
+var $ = function (id) { return document.getElementById(id); };
+
+function renewId() { $('nId').value = String(Date.now()).slice(-6); save(); render(); }
+
+function readForm() {
+  return {
+    notice: {
+      id: Number($('nId').value) || 0,
+      title: $('nTitle').value.trim(),
+      body: $('nBody').value,
+      enabled: $('nOn').checked ? 1 : 0
+    },
+    versions: {
+      tv: {
+        ver_code: Number($('tvCode').value) || 0,
+        ver_name: $('tvName').value.trim(),
+        force: $('tvForce').checked ? 1 : 0,
+        enabled: $('tvOn').checked ? 1 : 0,
+        url: $('tvUrl').value.trim(),
+        notes: $('tvNotes').value
+      },
+      anime: {
+        ver_code: Number($('anCode').value) || 0,
+        ver_name: $('anName').value.trim(),
+        force: $('anForce').checked ? 1 : 0,
+        enabled: $('anOn').checked ? 1 : 0,
+        url: $('anUrl').value.trim(),
+        notes: $('anNotes').value
+      }
+    }
+  };
+}
+
+function fill(d) {
+  d = d || {};
+  var n = d.notice || {}, v = d.versions || {}, tv = v.tv || {}, an = v.anime || {};
+  $('nTitle').value = n.title || '';
+  $('nBody').value = n.body || '';
+  $('nOn').checked = n.enabled !== 0;
+  $('nId').value = n.id || String(Date.now()).slice(-6);
+  $('tvCode').value = tv.ver_code || '';
+  $('tvName').value = tv.ver_name || '';
+  $('tvUrl').value = tv.url || '';
+  $('tvNotes').value = tv.notes || '';
+  $('tvForce').checked = !!tv.force;
+  $('tvOn').checked = tv.enabled !== 0;
+  $('anCode').value = an.ver_code || '';
+  $('anName').value = an.ver_name || '';
+  $('anUrl').value = an.url || '';
+  $('anNotes').value = an.notes || '';
+  $('anForce').checked = !!an.force;
+  $('anOn').checked = an.enabled !== 0;
+}
+
+function save() {
+  try { localStorage.setItem(KEY_STORE, JSON.stringify(readForm())); } catch (e) {}
+}
+function render() {
+  var d = readForm();
+  $('out').value = JSON.stringify(d, null, 2);
+  var bad = [];
+  if (!d.notice.title) bad.push('公告标题为空');
+  ['tv','anime'].forEach(function (k) {
+    var v = d.versions[k];
+    if (v.ver_code && !/^https?:/.test(v.url)) bad.push((k === 'tv' ? '影视' : '动漫') + '安装包地址不是 http(s) 链接');
+    if (!v.ver_code && v.ver_name) bad.push((k === 'tv' ? '影视' : '动漫') + '填了版本名但没填版本号');
+  });
+  var m = $('msg');
+  if (bad.length) { m.className = 'msg bad'; m.textContent = '· ' + bad.join(' · '); }
+  else { m.className = 'msg ok'; m.textContent = 'JSON 正常，可以下载发布'; }
+}
+
+function download() {
+  save(); render();
+  var blob = new Blob([$('out').value], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'config.json';
+  a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+}
+function copyJson() {
+  save(); render();
+  var t = $('out').value;
+  if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () {
+    $('msg').className = 'msg ok'; $('msg').textContent = 'JSON 已复制到剪贴板';
+  });
+  else { $('out').select(); document.execCommand('copy'); }
+}
+
+function preview() {
+  var d = readForm(), notice = d.notice, v = d.versions.tv;
+  var html = '';
+  if (notice.enabled && notice.title) {
+    html = '<div class="mt">' + esc(notice.title) + '</div><div class="mb">' + esc(notice.body) + '</div>' +
+      '<div class="macts"><div class="mbtn pri">我知道了</div></div>';
+  } else if (v.ver_code) {
+    html = '<div class="mt">发现新版本 ' + esc(v.ver_name) + '<span class="mtag">' + (v.force ? '强制更新' : '可选更新') + '</span></div>' +
+      '<div class="mb">' + esc(v.notes) + '</div><div class="macts">' +
+      (v.force ? '' : '<div class="mbtn">稍后再说</div>') + '<div class="mbtn pri">立即更新</div></div>';
+  } else {
+    html = '<div class="mt">没有可预览的内容</div><div class="mb">填一条公告或一个版本先</div>';
+  }
+  $('pvCard').innerHTML = html;
+  $('pv').classList.add('show');
+}
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+$('pv').onclick = function (e) { if (e.target === $('pv')) $('pv').classList.remove('show'); };
+
+document.querySelectorAll('input,textarea').forEach(function (el) {
+  el.addEventListener('input', function () { save(); render(); });
+});
+var draft = null;
+try { draft = JSON.parse(localStorage.getItem(KEY_STORE) || 'null'); } catch (e) {}
+fill(draft);
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "notice": {
+    "id": 100001,
+    "title": "欢迎使用老八影视",
+    "body": "线路维护、版本更新都会在这里通知，看到问题可以先切换备用线路。",
+    "enabled": 1
+  },
+  "versions": {
+    "tv": {
+      "ver_code": 10,
+      "ver_name": "v1.9",
+      "force": 0,
+      "enabled": 1,
+      "url": "https://aka.doubaocdn.com/s/NLr8KTqFCg",
+      "notes": ""
+    },
+    "anime": {
+      "ver_code": 10,
+      "ver_name": "v1.9",
+      "force": 0,
+      "enabled": 1,
+      "url": "https://aka.doubaocdn.com/s/yzaiiV30nC",
+      "notes": ""
+    }
+  }
+}
