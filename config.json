@@ -1,6 +1,6 @@
 {
   "notice": {
-    "id": 399233,
+    "id": 520203,
     "title": "测试",
     "body": "测试",
     "enabled": 1
@@ -15,12 +15,12 @@
       "notes": ""
     },
     "anime": {
-      "ver_code": 0,
-      "ver_name": "",
+      "ver_code": 111,
+      "ver_name": "111",
       "force": 0,
       "enabled": 1,
-      "url": "",
-      "notes": ""
+      "url": "111",
+      "notes": "111"
     }
   }
 }
