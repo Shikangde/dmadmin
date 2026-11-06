@@ -1,0 +1,7 @@
+# Cloudflare Pages：让 config.json 可被 dmup 等其他域名读取
+/config.json
+  Access-Control-Allow-Origin: *
+
+# 编辑台不需要被索引
+/*
+  X-Robots-Tag: noindex
